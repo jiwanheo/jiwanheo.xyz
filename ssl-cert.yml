@@ -68,21 +68,14 @@ Resources:
           Value: jiwanheo.xyz
 
 
-#   # Custom ACM Certificate Resource
-#   MyACMCertificate:
-#     Type: "Custom::ACM"
-#     Properties:
-#       ServiceToken: !GetAtt CustomACMLambdaFunction.Arn
-#       DomainName: jiwanheo.com
-#       HostedZoneId: Z04272821ORGI71B464J8
-#       Region: us-east-1
-#       Tags:
-#         - Key: Project
-#           Value: jiwanheo.com
-
-
-# Outputs:
-#   CertificateArn:
-#     Value: !GetAtt MyACMCertificate.CertificateArn
-#     Export:
-#       Name: MySSLCertificateStack-CertificateArn
+  # Custom ACM Certificate Resource
+  MyACMCertificate:
+    Type: "Custom::ACM"
+    Properties:
+      ServiceToken: !GetAtt CustomACMLambdaFunction.Arn
+      DomainName: jiwanheo.xyz
+      HostedZoneId: Z066358329E65RHIEOJXQ
+      Region: us-east-1
+      Tags:
+        - Key: Project
+          Value: jiwanheo.xyz
