@@ -73,7 +73,7 @@ Resources:
     Type: "Custom::ACM"
     Properties:
       ServiceToken: !GetAtt CustomACMLambdaFunction.Arn
-      DomainName: jiwanheo.xyz
+      DomainName: "*.jiwanheo.xyz"
       HostedZoneId: Z066358329E65RHIEOJXQ
       Region: us-east-1
       Tags:
