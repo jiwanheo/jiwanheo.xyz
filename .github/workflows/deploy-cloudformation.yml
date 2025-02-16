@@ -25,7 +25,7 @@ jobs:
       - name: Deploy SSL Certificate Stack
         run: |
           aws cloudformation deploy \
-            --template-file sslcert.yml \
+            --template-file ssl-cert.yml \
             --stack-name jiwanheoXyz-SSLCertificateStack \
             --capabilities CAPABILITY_NAMED_IAM \
             --tags Project=jiwanheo.xyz
