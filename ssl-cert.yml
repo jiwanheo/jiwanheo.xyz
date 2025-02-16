@@ -52,20 +52,20 @@ Resources:
           Value: jiwanheo.xyz
 
       
-#   # Lambda Function to Handle ACM Validation
-#   CustomACMLambdaFunction:
-#     Type: AWS::Lambda::Function
-#     Properties:
-#       Handler: acm-lambda.lambda_handler
-#       Runtime: python3.13
-#       Code:
-#         S3Bucket: !ImportValue S3ForACMLambdaName
-#         S3Key: acm-lambda_function.zip
-#       Timeout: 300
-#       Role: !GetAtt CustomACMLambdaExecutionRole.Arn
-#       Tags:
-#         - Key: Project
-#           Value: jiwanheo.com
+  # Lambda Function to Handle ACM Validation
+  CustomACMLambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Handler: create-and-validate-acm-ssl.lambda_handler
+      Runtime: python3.13
+      Code:
+        S3Bucket: useful-functions
+        S3Key: create-and-validate-acm-ssl.zip
+      Timeout: 300
+      Role: !GetAtt CustomACMLambdaExecutionRole.Arn
+      Tags:
+        - Key: Project
+          Value: jiwanheo.xyz
 
 
 #   # Custom ACM Certificate Resource
