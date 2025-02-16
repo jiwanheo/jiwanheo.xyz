@@ -1,0 +1,88 @@
+Description: Deploy ACM Certificate with DNS Validation
+
+Resources:
+
+  # IAM Role for the Lambda Function
+  CustomACMLambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies: # This is a list of policy documents
+        - PolicyName: LambdaACMRoute53AccessPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - acm:RequestCertificate
+                  - acm:DescribeCertificate
+                  - acm:DeleteCertificate
+                  - acm:ListCertificates
+                  - route53:ChangeResourceRecordSets
+                Resource: "*"
+        - PolicyName: LambdaS3AccessPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                # For all new projects, I'll need to add in their ARN here
+                Resource:
+                  - "arn:aws:s3:::salsa-tracker/*"
+
+        - PolicyName: LambdaCloudWatchLogsPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: "arn:aws:logs:*:*:*"
+      Tags:
+        - Key: Project
+          Value: jiwanheo.xyz
+
+      
+#   # Lambda Function to Handle ACM Validation
+#   CustomACMLambdaFunction:
+#     Type: AWS::Lambda::Function
+#     Properties:
+#       Handler: acm-lambda.lambda_handler
+#       Runtime: python3.13
+#       Code:
+#         S3Bucket: !ImportValue S3ForACMLambdaName
+#         S3Key: acm-lambda_function.zip
+#       Timeout: 300
+#       Role: !GetAtt CustomACMLambdaExecutionRole.Arn
+#       Tags:
+#         - Key: Project
+#           Value: jiwanheo.com
+
+
+#   # Custom ACM Certificate Resource
+#   MyACMCertificate:
+#     Type: "Custom::ACM"
+#     Properties:
+#       ServiceToken: !GetAtt CustomACMLambdaFunction.Arn
+#       DomainName: jiwanheo.com
+#       HostedZoneId: Z04272821ORGI71B464J8
+#       Region: us-east-1
+#       Tags:
+#         - Key: Project
+#           Value: jiwanheo.com
+
+
+# Outputs:
+#   CertificateArn:
+#     Value: !GetAtt MyACMCertificate.CertificateArn
+#     Export:
+#       Name: MySSLCertificateStack-CertificateArn
